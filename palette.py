@@ -28,8 +28,8 @@ if __name__ == "__main__":
                   
     hue = lambda color: color.hsva[0]/(360.0/numhues) if color.hsva[1] else -1
 
-    width = len(lights)*(squaresize + gapsize) + gapsize
-    height = (numhues+1)*(squaresize + gapsize) + gapsize
+    width = (numhues+1)*(squaresize + gapsize) + gapsize
+    height = len(lights)*(squaresize + gapsize) + gapsize
     size = width, height     
                   
     screen = pygame.display.set_mode(size)
@@ -40,8 +40,8 @@ if __name__ == "__main__":
     for line, (key, group) in enumerate(groupby(sorted(_colors, key=hue), key=hue)):
         for color in group:
             position = lights.index(light(color))
-            x = position*(squaresize + gapsize) + gapsize
-            y = (key+1)*(squaresize + gapsize) + gapsize
+            x = (key+1)*(squaresize + gapsize) + gapsize
+            y = position*(squaresize + gapsize) + gapsize
             screen.fill(color, pygame.Rect(x, y, squaresize, squaresize))
             text = "0x%0.2X" % _colors.index(color)
             screen.blit(font.render(text, False, pygame.Color('white')), (x + 1, y))
