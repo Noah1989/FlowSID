@@ -43,7 +43,7 @@ while 1:
 
     mouse_pos = tuple(x/scale for x in pygame.mouse.get_pos())
       
-    screen.fill(palette.color(0x17))
+    screen.fill(palette.color(0x2b))
 
     screen.blit(info_text, (1, 1))
     if pygame.mouse.get_focused():
