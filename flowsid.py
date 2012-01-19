@@ -16,6 +16,18 @@ def render_text(text, color=0x3f, large=False):
     
 info_text = render_text('FlowSID v0.0.1')
 
+transparent = pygame.Color('white')
+def get_surface(width, height):
+    surface = pygame.Surface((width, height))
+    surface.set_colorkey(transparent)
+    surface.fill(transparent)
+    return surface
+
+cursor = get_surface(6, 8)
+points = (0,0),(0,7),(2,5),(5,5)
+pygame.draw.polygon(cursor, palette.color(0x1d), points)
+pygame.draw.polygon(cursor, palette.color(0x00), points, 1)
+
 clock = pygame.time.Clock()
 frame = 0
 
@@ -35,7 +47,7 @@ while 1:
 
     screen.blit(info_text, (1, 1))
     if pygame.mouse.get_focused():
-        pygame.draw.circle(screen, palette.color(0x1b), mouse_pos, 3, 2)    
+        screen.blit(cursor, mouse_pos)    
     pygame.transform.scale(screen, real_size, real_screen)    
     pygame.display.flip()
     frame = (frame + 1) % 0x100
