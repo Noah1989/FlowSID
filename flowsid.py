@@ -41,7 +41,10 @@ class UserInterface:
                 if clickable.rect.collidepoint(position):
                     rel_pos = (position[0] - clickable.rect.left,
                                position[1] - clickable.rect.top)
-                    clickable.mouse_down(rel_pos, event.button)   
+                    clickable.mouse_down(rel_pos, event.button)
+                    if clickable in self.board.components:
+                        self.clickables.remove(clickable)
+                        self.clickables.append(clickable)
                     break
         elif event.type == pygame.MOUSEBUTTONUP:
             position = tuple(x/graphics.scale for x in event.pos)
