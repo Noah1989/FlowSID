@@ -22,9 +22,9 @@ def render_loop(event_handler):
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.VIDEORESIZE:
-                real_size = event.size
+                size = tuple(x/scale for x in event.size)
+                real_size = tuple(x*scale for x in size)
                 real_screen = pygame.display.set_mode(real_size, pygame.RESIZABLE)
-                size = width, height = tuple(x/scale for x in real_size)
                 screen = pygame.Surface(size)
             else:
                 event_handler(event)
