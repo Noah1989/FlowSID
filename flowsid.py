@@ -11,7 +11,7 @@ class UserInterface:
         self.cursor = cursor.Cursor() 
         
         self.toolbar = toolbar.Toolbar()
-        self.toolbar.add_tool(components.display.Tool(self.board))
+        self.toolbar.add_tool(components.display.DisplayTool(self.board))
         self.clickables.append(self.toolbar)
         
         infotext = text.render('FlowSID v0.0.1')

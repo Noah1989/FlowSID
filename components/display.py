@@ -1,11 +1,11 @@
-import pygame, palette, graphics, text, toolbar, pprint
+import pygame, palette, text, toolbar, pprint, component
 
 bg_color = palette.color(0x04)    
 text_color = palette.color(0x0c)
 light_color = palette.color(0x2e)
 dark_color = palette.color(0x19)
 
-class Tool(toolbar.Tool):
+class DisplayTool(toolbar.Tool):
     def __init__(self, board):
         toolbar.Tool.__init__(self)
         self.board = board
@@ -15,16 +15,16 @@ class Tool(toolbar.Tool):
         self.image.blit(symbol.image, symbol.rect)
     
     def click(self):
-        self.board.add_component(Component())
+        self.board.add_component(DisplayComponent())
         pass
         
         
-class Component(graphics.SimpleSprite):  
+class DisplayComponent(component.Component):  
     
     def __init__(self):
-        graphics.SimpleSprite.__init__(self, 64, 18)
-        self.image.fill(bg_color)
+        component.Component.__init__(self, 64, 18)
         
+        self.image.fill(bg_color)        
         pygame.draw.rect(self.image, palette.color(0x00), self.rect)
         
         rect = self.rect.inflate(-3, -3)
@@ -41,23 +41,10 @@ class Component(graphics.SimpleSprite):
         self.image.set_clip(self.rect.inflate(-6, -6))
         
         self.inp(None)
-        
-        self.moving = True
-            
-            
-    def mouse_down(self, position, button):
-        if button == 1:
-            self.moving = False
-        elif button == 3:
-            self.moving = not self.moving
-    
-    def mouse_up(self, position, button):
-        pass
+
         
     def update(self, frame):
-        if self.moving:
-            mouse_pos = tuple(x/graphics.scale for x in pygame.mouse.get_pos())
-            self.rect.center = mouse_pos            
+        component.Component.update(self, frame)
         
         if self.scroll:
             if self.text.rect.width <= self.rect.width - 8:
