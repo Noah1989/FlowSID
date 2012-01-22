@@ -6,6 +6,7 @@ light_color = palette.color(0x2e)
 dark_color = palette.color(0x19)
 
 class DisplayTool(toolbar.Tool):
+
     def __init__(self, board):
         toolbar.Tool.__init__(self)
         self.board = board
