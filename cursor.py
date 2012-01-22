@@ -9,7 +9,7 @@ class Cursor(graphics.SimpleSprite):
         pygame.draw.polygon(self.image, palette.color(0x00), points, 1)
         self.add(graphics.toplayer)
     
-    def update(self):
+    def update(self, frame):
         if pygame.mouse.get_focused():            
             mouse_pos = tuple(x/graphics.scale for x in pygame.mouse.get_pos())   
             self.rect.topleft = mouse_pos

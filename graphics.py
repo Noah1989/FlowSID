@@ -2,17 +2,19 @@ import pygame, palette
 
 scale = 2
 transparent = pygame.Color('white')
-bg_color = palette.color(0x2b)
-empty = pygame.Surface((0,0))
+bg_color = palette.color(0x16)
 invisible = pygame.sprite.Group()
+mainlayer = pygame.sprite.Group()
+uilayer = pygame.sprite.Group()
 toplayer = pygame.sprite.Group()
 
 def init():
     pygame.display.init()
     pygame.event.post(pygame.event.Event(pygame.VIDEORESIZE, size=(640, 400)))
-    pygame.mouse.set_visible(False)  
+    pygame.mouse.set_visible(False)
 
 def render_loop(event_handler):
+    global screen
     clock = pygame.time.Clock()
     frame = 0
     while 1:
@@ -29,9 +31,11 @@ def render_loop(event_handler):
                
         screen.fill(bg_color)
         
-        invisible.update()
-        toplayer.update()
-        toplayer.draw(screen)
+        for layer in (invisible, mainlayer, uilayer, toplayer):
+            layer.update(frame)
+        
+        for layer in (mainlayer, uilayer, toplayer):
+            layer.draw(screen)
               
         pygame.transform.scale(screen, real_size, real_screen)    
         pygame.display.flip()
@@ -47,3 +51,6 @@ class SimpleSprite(pygame.sprite.Sprite):
         self.image.set_colorkey(transparent)
         self.image.fill(transparent)
         self.rect = self.image.get_rect()
+        
+    def update(self, frame):
+        pass
