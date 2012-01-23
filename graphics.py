@@ -5,6 +5,7 @@ transparent = pygame.Color('white')
 bg_color = palette.color(0x16)
 invisible = pygame.sprite.Group()
 mainlayer = pygame.sprite.Group()
+wirelayer = pygame.sprite.Group()
 uilayer = pygame.sprite.Group()
 toplayer = pygame.sprite.Group()
 
@@ -31,12 +32,13 @@ def render_loop(event_handler):
                
         screen.fill(bg_color)
         
-        for layer in (invisible, mainlayer, uilayer, toplayer):
+        for layer in (invisible, mainlayer, wirelayer, uilayer, toplayer):
             layer.update(frame)
-        
-        for layer in (mainlayer, uilayer, toplayer):
+               
+        for layer in (mainlayer, wirelayer, uilayer, toplayer):
             layer.draw(screen)
               
+        #pygame.transform.scale2x(screen, real_screen)    
         pygame.transform.scale(screen, real_size, real_screen)    
         pygame.display.flip()
         frame = (frame + 1) % 0x100

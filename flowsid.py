@@ -1,4 +1,4 @@
-import pygame, graphics, palette, cursor, toolbar, text, components
+import pygame, graphics, palette, cursor, toolbar, text, components, wire
 
 graphics.init()
 text.init()
@@ -33,6 +33,8 @@ class UserInterface:
             
         info.update = update_info
         graphics.uilayer.add(info)
+        
+        graphics.wirelayer.add(wire.Wire())
 
     def event(self, event):    
         if event.type == pygame.MOUSEBUTTONDOWN:
