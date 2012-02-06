@@ -12,6 +12,7 @@ class UserInterface:
         
         self.toolbar = toolbar.Toolbar()
         self.toolbar.add_tool(components.display.DisplayTool(self.board))
+        self.toolbar.add_tool(components.button.ButtonTool(self.board))
         self.clickables.append(self.toolbar)
         
         infotext = text.render('FlowSID v0.0.1')
@@ -33,8 +34,6 @@ class UserInterface:
             
         info.update = update_info
         graphics.uilayer.add(info)
-        
-        graphics.wirelayer.add(wire.Wire())
 
     def event(self, event):    
         if event.type == pygame.MOUSEBUTTONDOWN:

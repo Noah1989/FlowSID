@@ -25,8 +25,7 @@ class DisplayComponent(component.Component):
     def __init__(self):
         component.Component.__init__(self, 64, 18)
         
-        self.image.fill(bg_color)        
-        pygame.draw.rect(self.image, palette.color(0x00), self.rect)
+        self.image.fill(palette.color(0x00))
         
         rect = self.rect.inflate(-3, -3)
         pygame.draw.lines(self.image, dark_color, False, 
