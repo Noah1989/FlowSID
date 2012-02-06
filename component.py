@@ -13,8 +13,9 @@ class Component(graphics.SimpleSprite):
             old_pos = self.rect.center
             mouse_pos = tuple(x/graphics.scale for x in pygame.mouse.get_pos())
             self.rect.center = mouse_pos
-            while any(not item.moving for item 
-                      in pygame.sprite.spritecollide(self, graphics.mainlayer, False)):
+            while self.rect.center != old_pos and \
+                  any(not item.moving for item in
+                      pygame.sprite.spritecollide(self, graphics.mainlayer, False)):
                 self.rect.center = tuple((sum(x) + math.copysign(1, x[1] - x[0]))/2 
                                           for x in zip(self.rect.center, old_pos))
 
