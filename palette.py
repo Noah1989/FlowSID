@@ -35,7 +35,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(size)
     screen.fill(pygame.Color('white'))
 
-    font = pygame.font.Font('OptiSmallBP.fon', 0)
+    font = pygame.font.Font('ProggyTiny.fon', 0)
 
     for line, (key, group) in enumerate(groupby(sorted(_colors, key=hue), key=hue)):
         for color in group:
