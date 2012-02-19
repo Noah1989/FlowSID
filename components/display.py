@@ -1,4 +1,4 @@
-import pygame, palette, text, toolbar, pprint, component
+import pygame, palette, text, toolbar, pprint, component, connection
 
 bg_color = palette.color(0x04)    
 text_color = palette.color(0x0c)
@@ -14,6 +14,7 @@ class DisplayTool(toolbar.Tool):
         symbol = text.render("x:", text_color)
         symbol.rect.topleft = (3, 3)
         self.image.blit(symbol.image, symbol.rect)
+
     
     def click(self):
         self.board.add_component(DisplayComponent())
@@ -40,6 +41,8 @@ class DisplayComponent(component.Component):
                           (rect.topright, rect.bottomright, rect.bottomleft))
         self.image.set_clip(self.rect.inflate(-6, -6))
         
+        inp = connection.Connection()
+        self.inputs.append(inp)
         self.inp(None)
 
         

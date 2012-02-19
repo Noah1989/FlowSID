@@ -7,6 +7,7 @@ class Component(graphics.SimpleSprite):
         self.moving = True
         self.inputs = []
         self.outputs = []
+        self.add(graphics.mainlayer)
     
     def update(self, frame):
         if self.moving:
@@ -18,6 +19,12 @@ class Component(graphics.SimpleSprite):
                       pygame.sprite.spritecollide(self, graphics.mainlayer, False)):
                 self.rect.center = tuple((sum(x) + math.copysign(1, x[1] - x[0]))/2 
                                           for x in zip(self.rect.center, old_pos))
+            for conn in self.inputs:
+                conn.rect.right = self.rect.left
+                conn.rect.centery = self.rect.centery + conn.position * conn.rect.height
+            for conn in self.outputs:
+                conn.rect.left = self.rect.right
+                conn.rect.centery = self.rect.centery + conn.position * conn.rect.height
 
     def mouse_down(self, position, button):
         if button == 1:

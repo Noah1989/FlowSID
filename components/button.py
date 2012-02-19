@@ -1,4 +1,4 @@
-import pygame, graphics, palette, toolbar, component
+import pygame, graphics, palette, toolbar, component, connection
 
 # looks good for sizes 3 to 8 
 def draw_button(sprite, size, up=True):
@@ -45,6 +45,8 @@ class ButtonComponent(component.Component):
         component.Component.__init__(self, self.size*2, self.size*2)
         draw_button(self, self.size)
         self.is_down = False
+        out = connection.Output()
+        self.outputs.append(out)
         
     def mouse_down(self, position, button):        
         component.Component.mouse_down(self, position, button)

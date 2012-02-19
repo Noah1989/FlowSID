@@ -2,28 +2,45 @@ import pygame, graphics, palette
 
 segment_width = 8
 
-class Wire(pygame.sprite.Group):
+class Wire():
        
-    def __init__(self):
-        pygame.sprite.Group.__init__(self)
+    def __init__(self):        
+        segment = Segment()
+        self.segments = [segment]
         
         
-        recent = None
-        for x in range(50, 250, segment_width):
-            segment = Segment()
-            segment.y = 25
-            segment.rect.left = x
-            if recent:
-                segment.left = recent
-                recent.right = segment
-            self.add(segment)
-            recent = segment        
+    def set_start(self, (x, y)):         
+        old_stop = self.segments[-1].rect.topright
+        self.segments[0].rect.left = x
+        self.segments[0].y = y
+        for segment in self.segments[1:]:
+            segment.rect.left = segment.left.rect.right
+        self.set_stop(old_stop)
             
-        graphics.wirelayer.add(self)
+    def set_stop(self, (x, y)):
+        for segment in self.segments[1:]:            
+            if segment.rect.right > x:
+                segment.left.right = None
+                segment.kill()
+                self.segments.remove(segment)        
+        while self.segments[-1].rect.right < x:
+            segment = Segment()            
+            segment.y = y
+            segment.rect.topleft = self.segments[-1].rect.right, y
+            segment.left = self.segments[-1]
+            segment.update_size()
+            self.segments[-1].right = segment 
+            self.segments.append(segment)
+            segment.left.rect.width = segment_width
+        self.segments[-1].y = y
+        self.segments[-1].nexty = None        
+        self.segments[-1].rect.top = y
+        self.segments[-1].rect.width = max(x - self.segments[-1].rect.left, 1)
+        self.segments[-1].rect.right = x
+        self.segments[-1].update_size()
+        graphics.wirelayer.add(self.segments)        
 
 class Segment(pygame.sprite.Sprite):
-
-    surface = pygame.surface.Surface((segment_width, 2))    
     
     images = {}
     
@@ -58,10 +75,11 @@ class Segment(pygame.sprite.Sprite):
             force -= self.friction*self.speed
             self.speed += force/self.mass
             self.nexty = self.y + self.speed  
-        if not self.right:
-            mouse_pos = tuple(x/graphics.scale for x in pygame.mouse.get_pos())
-            self.y = mouse_pos[1]     
+        
+        if not self.right:      
             self.rect.top = self.y
+                    
+        if self.left:
             self.left.update_size()   
             
     def update_size(self): 
@@ -71,9 +89,10 @@ class Segment(pygame.sprite.Sprite):
             size = 0
             
         height = abs(size) + self.thickness
-        width = segment_width
+        width = self.rect.width
+        key = (width, size)
         
-        if not size in self.images:            
+        if not key in self.images:            
             image = pygame.Surface((width, height))
             image.set_colorkey(graphics.transparent)            
             image.fill(graphics.transparent)
@@ -88,9 +107,9 @@ class Segment(pygame.sprite.Sprite):
                     color = self.fill_color
                 pygame.draw.lines(image, color, False, points1)
                 
-            self.images[size] = image
+            self.images[key] = image
             
-        self.image = self.images[size]
+        self.image = self.images[key]
         self.rect.height = height
         if self.right:
             if self.y < self.right.y:

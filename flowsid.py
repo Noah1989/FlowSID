@@ -64,7 +64,8 @@ class Board:
     def add_component(self, component):
         self.components.append(component)
         self.flowsid.clickables.append(component)
-        graphics.mainlayer.add(component)
+        self.flowsid.clickables.extend(component.inputs)
+        self.flowsid.clickables.extend(component.outputs)
 
 if __name__ == "__main__":
     graphics.render_loop(UserInterface().event)
